@@ -4,20 +4,24 @@ Simple build script for basic one-document pdflatex projects
 
 ## Usage
 
-The script searchs for the `.latex.build` config file recursively starting from the current working directory.
+The script searches for the `.latex.build` config file recursively starting from the current working directory.
 
 `.latex.build` files describes a particular build:
 
 ```
 latex-build-command = < build command >
-latex-build-dir     = < build working directory >
-latex-build-doc     = < build source >
+latex-work-dir      = < build working directory >
+latex-input-doc     = < build source >
 ```
 
-If no build command specified, `LATEX_BUILD_COMMAND` environment variable is used. Build command may contain environment variables.
+We will denote the location of the `.latex.build` file as `CFG_DIR`.
 
-Build source option is relative to build directory. If no build source specified, the first `*.tex` file found starting from the given build directory is used.
+If no build command specified, the `LATEX_BUILD_COMMAND` environment variable will be used. Build command may also refer to environment variables.
 
-Build directory may be set relative to the current working directory. If no build directory specified, the parent directory of the given build source is used. If neither build source nor build directory specified, the first `*.tex` file found starting from the current working directory is used and build directory is set to its parent directory.
+Build source option is relative to `CFG_DIR`. If no build source specified, the first `*.tex` file found starting from `CFG_DIR` is used. If the `LATEX_INPUT_DOC` environment variable is present, it will be tried first.
 
-The minimal configuration is empty `.latex.build` file and `LATEX_BUILD_COMMAND` environment variable set.
+Working directory is also relative to `CFG_DIR`. If no working directory specified, `CFG_DIR` is used instead. If the `LATEX_WORK_DIR` environment variable is present, it will be tried first.
+
+The minimal configuration is empty `.latex.build` file and the `LATEX_BUILD_COMMAND` environment variable set.
+
+Whether the build script should fail the build is controlled via the `FAIL_BUILD_ON_ERROR` environment variable (possible values are `true` or `yes`, case insensitive).
