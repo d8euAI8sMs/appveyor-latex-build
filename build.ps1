@@ -10,6 +10,8 @@ $LatexWorkDir      = $Env:LATEX_WORK_DIR
 
 $FailBuildOnError  = $Env:FAIL_BUILD_ON_ERROR
 
+$BuildRetryCount = 8
+
 $InvocationPath = $MyInvocation.MyCommand.Path;
 
 function New-BuildConfiguration{
@@ -249,7 +251,7 @@ function Run-Build{
         $Failed = $false;
         $BuildLog = "";
 
-        For($i = 0; $i -lt 3; $i++){
+        For($i = 0; $i -lt $BuildRetryCount; $i++){
             If($Failed){
                 Add-LogMessage -Severity "WARN" -Message "Build failed for some reasons, rerun the build" -BuildInfo $_;
             }
